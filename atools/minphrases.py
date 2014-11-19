@@ -63,17 +63,25 @@ def minimal_biphrases(f_words, e_words, links):
     # biphrases
     biphrases = set()
     # 2) find minimal phrase pairs
-    # starting from the first word of the source (starting from the target wouldn't change the result)
-    f_start = 0
+    f_done = set()
+    e_done = set()
     # iterate investigating words in the source
-    while f_start < len(f_words):
+    # TODO: sort alignment points as to visit adjacent points first
+    for fi, ej in links:
+        # check if row or column have alread been done, if so, the minimal phrase consistent with this alignment point has already been found
+        if fi in f_done or ej in e_done:
+            continue
+        else:
+            # flag row and column as processed
+            f_done.add(fi)
+            e_done.add(ej)
         # source phrase boundaries
-        f_min, f_max = None, None
+        f_min, f_max = fi, fi
         # target phrase boundaries
-        e_min, e_max = None, None
+        e_min, e_max = ej, ej
         # queue of words whose alignment points need be investigated
-        f_queue = deque([f_start])
-        e_queue = deque()
+        f_queue = deque([f_min])
+        e_queue = deque([e_min])
         # for as long as there are words to be visited
         while f_queue or e_queue:
             if f_queue: 
@@ -91,17 +99,10 @@ def minimal_biphrases(f_words, e_words, links):
                 # book discovered source words
                 f_queue.extend(extra)
 
-        # if we have a phrase pair, it is minimal
-        if f_min is not None and e_min is not None:
-            f_phrase = tuple(range(f_min, f_max + 1))
-            e_phrase = tuple(range(e_min, e_max + 1))
-            biphrases.add((f_phrase, e_phrase))
-            # and we continue from the next target word
-            #f_start = f_max + 1
-            f_start += 1
-        else:
-            # otherwise we just skip over the unaligned source word
-            f_start += 1
+        # store the minimal phrase
+        f_phrase = tuple(range(f_min, f_max + 1))
+        e_phrase = tuple(range(e_min, e_max + 1))
+        biphrases.add((f_phrase, e_phrase))
 
     return biphrases
 

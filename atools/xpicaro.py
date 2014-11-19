@@ -124,8 +124,8 @@ def simply_interactive(args):
                     bottom_up=args.bottom_up, 
                     attach_top=args.attach_top, 
                     filler=args.filler))
-        #for fs, es in biphrases:
-        #    print ' '.join(str(x) for x in fs), '=>', ' '.join(str(y) for y in es)
+        for fs, es in biphrases:
+            print ' '.join(str(x) for x in fs), '=>', ' '.join(str(y) for y in es)
 
 def fully_interactive(args):
     # loads dataset
