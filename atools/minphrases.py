@@ -61,7 +61,7 @@ def minimal_biphrases(f_words, e_words, links):
     f2e = {f:sorted(es) for f, es in f2e.iteritems()}
     e2f = {e:sorted(fs) for e, fs in e2f.iteritems()}
     # biphrases
-    biphrases = []
+    biphrases = set()
     # 2) find minimal phrase pairs
     # starting from the first word of the source (starting from the target wouldn't change the result)
     f_start = 0
@@ -93,11 +93,12 @@ def minimal_biphrases(f_words, e_words, links):
 
         # if we have a phrase pair, it is minimal
         if f_min is not None and e_min is not None:
-            f_phrase = range(f_min, f_max + 1)
-            e_phrase = range(e_min, e_max + 1)
-            biphrases.append((f_phrase, e_phrase))
+            f_phrase = tuple(range(f_min, f_max + 1))
+            e_phrase = tuple(range(e_min, e_max + 1))
+            biphrases.add((f_phrase, e_phrase))
             # and we continue from the next target word
-            f_start = f_max + 1
+            #f_start = f_max + 1
+            f_start += 1
         else:
             # otherwise we just skip over the unaligned source word
             f_start += 1
