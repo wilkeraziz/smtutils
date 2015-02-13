@@ -7,7 +7,7 @@ from collections import defaultdict, deque
 
 
 def as_words(phrase, id2word):
-    return [id2word[i] for i in phrase]
+    return tuple(id2word[i] for i in phrase)
 
 
 def try_expand(f, f2e, f_min, f_max, e_min, e_max):
