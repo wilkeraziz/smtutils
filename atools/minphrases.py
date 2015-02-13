@@ -5,6 +5,11 @@ Extracts minimal phrases from symmetrized word alignments
 
 from collections import defaultdict, deque
 
+
+def as_words(phrase, id2word):
+    return [id2word[i] for i in phrase]
+
+
 def try_expand(f, f2e, f_min, f_max, e_min, e_max):
     """
     Try to expand the boundaries of a phrase pair based on the alignment points in f2e[f]
@@ -137,3 +142,15 @@ def parse_line(line, separator = ' ||| '):
     """returns the source words, the target words and the alignment points"""
     return parse_strings(*line.split(separator))
 
+
+def read_corpus(istream, separator=' ||| '):
+    """
+    Reads a file containing lines like this:
+        source sentence ||| taget sentence ||| alignment points
+    and returns a list where each element is a triple
+        (source, target, alignment)
+    and source is a list of source words
+        target is a list of target words
+        alignment is a list of pairs (each pair represents an alignment point of the kind (f,e))
+    """
+    return [parse_line(line.strip()) for line in istream]

@@ -15,3 +15,10 @@ Example:
 
     
         python xpicaro.py example.zh-en.gdfa
+
+
+# Minimal phrases
+
+Example:
+
+        python list_minimal_biphrases.py < example.zh-en.gdfa > example.zh-en.minphrases 
